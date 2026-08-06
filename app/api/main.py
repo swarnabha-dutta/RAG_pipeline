@@ -3,7 +3,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.config.settings import settings
+from app.core.handlers import rag_exception_handler
+from app.core.exceptions import RAGException
 from app.core.logger import setup_logger
+from app.models.response import APIResponse
+
+
 
 logger = setup_logger()
 
@@ -27,23 +32,42 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Register Global Exception Handler
+app.add_exception_handler(
+    RAGException,
+    rag_exception_handler,
+)
 
-@app.get("/", tags=["Root"])
+
+@app.get(
+    "/",
+    tags=["Root"],
+    response_model=APIResponse,
+)
 async def home():
     logger.info("Home endpoint called")
 
-    return {
-        "success": True,
-        "message": "Production RAG API Running 🚀",
-        "version": "1.0.0",
-    }
+    return APIResponse(
+        success=True,
+        message="Production RAG API Running 🚀",
+        data={
+            "version": "1.0.0",
+        },
+    )
 
 
-@app.get("/health", tags=["Health"])
+@app.get(
+    "/health",
+    tags=["Health"],
+    response_model=APIResponse,
+)
 async def health():
     logger.info("Health endpoint called")
 
-    return {
-        "success": True,
-        "status": "healthy",
-    }
+    return APIResponse(
+        success=True,
+        message="Application Healthy",
+        data={
+            "status": "healthy",
+        },
+    )
