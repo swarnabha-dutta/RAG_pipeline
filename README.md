@@ -29,30 +29,33 @@ RAG/
 │   │   └── main.py
 │   │
 │   ├── config/
-│   │   └── settings.py
+│   │   ├── settings.py
+│   │   └── test_settings.py
 │   │
 │   ├── core/
 │   │   ├── logger.py
-│   │   └── exceptions.py
+│   │   ├── exceptions.py
+│   │   └── handlers.py
 │   │
 │   ├── database/
 │   ├── ingestion/
 │   ├── models/
+│   │   └── response.py
+│   │
 │   ├── services/
 │   └── utils/
 │
 ├── data/
 │   ├── pdfs/
-│   ├── cache/
-│   └── embeddings/
+│   └── processed/
 │
 ├── tests/
 │
-├── run.py
 ├── .env
 ├── .gitignore
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+└── run.py
 ```
 
 ---
@@ -67,15 +70,20 @@ RAG/
 - [x] Configuration Management
 - [x] Production Logger
 - [x] FastAPI Lifespan Events
-- [x] Health Check Endpoint
 - [x] Root Endpoint
+- [x] Health Check Endpoint
+- [x] Standard API Response Model
+- [x] Custom Exception Classes
+- [x] Global Exception Handler (V1)
+- [x] Swagger API Documentation
+- [x] Postman API Testing
 
 ---
 
 # 🚧 In Progress
 
-- Global Exception Handler
-- Pydantic Request & Response Schemas
+- HTTP Exception Handler
+- Generic Exception Handler
 - OpenRouter Client
 - Embedding Service
 - Qdrant Client
@@ -90,9 +98,9 @@ RAG/
 - Embedding Generation
 - Vector Storage (Qdrant)
 - Semantic Retrieval
-- RAG Pipeline
+- Retrieval-Augmented Generation (RAG) Pipeline
 - Prompt Engineering
-- Citation Support
+- Source Citation Support
 - Streaming Responses
 - REST API Endpoints
 - Docker Compose
@@ -104,20 +112,20 @@ RAG/
 
 # 🛠 Installation
 
-Clone the repository
+## Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd RAG
 ```
 
-Create Virtual Environment
+## Create Virtual Environment
 
 ```bash
 python -m venv .venv
 ```
 
-Activate Virtual Environment
+## Activate Virtual Environment
 
 ### Windows
 
@@ -131,13 +139,13 @@ Activate Virtual Environment
 source .venv/bin/activate
 ```
 
-Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the Application
+## Run the Application
 
 ```bash
 python run.py
@@ -147,22 +155,48 @@ python run.py
 
 # 📖 API Documentation
 
-Swagger UI
+## Swagger UI
 
 ```text
 http://localhost:8000/docs
 ```
 
-Health Check
+## Root Endpoint
 
-```text
+```http
+GET /
+```
+
+### Response
+
+```json
+{
+    "success": true,
+    "message": "Production RAG API Running 🚀",
+    "data": {
+        "version": "1.0.0"
+    }
+}
+```
+
+---
+
+## Health Check
+
+```http
 GET /health
 ```
 
-Root Endpoint
+### Response
 
-```text
-GET /
+```json
+{
+    "success": true,
+    "message": "Application Healthy",
+    "data": {
+        "status": "healthy"
+    }
+}
 ```
 
 ---
@@ -176,11 +210,18 @@ GET /
 | Configuration | ✅ Completed |
 | Logging | ✅ Completed |
 | Lifespan Events | ✅ Completed |
-| Exception Handling | 🔄 In Progress |
+| API Response Model | ✅ Completed |
+| Custom Exceptions | ✅ Completed |
+| Global Exception Handler (V1) | ✅ Completed |
+| HTTP Exception Handler | 🔄 In Progress |
+| Generic Exception Handler | ⏳ Pending |
 | OpenRouter Integration | ⏳ Pending |
 | Embedding Service | ⏳ Pending |
 | Qdrant Integration | ⏳ Pending |
 | PDF Processing | ⏳ Pending |
+| Chunking Strategy | ⏳ Pending |
+| Vector Store | ⏳ Pending |
+| Semantic Retrieval | ⏳ Pending |
 | RAG Pipeline | ⏳ Pending |
 | Docker | ⏳ Pending |
 | Testing | ⏳ Pending |
@@ -190,11 +231,39 @@ GET /
 
 # 🎯 Current Progress
 
-# 📈 Development Progress
+## Overall Progress
 
-**Overall Progress: 25%**
+**40% Completed**
 
-> The project foundation is complete. The next phase focuses on implementing the complete Retrieval-Augmented Generation (RAG) pipeline with vector search and LLM integration.
+### ✔️ Foundation Completed
+
+- FastAPI Application
+- Environment Configuration
+- Production Logger
+- Lifespan Events
+- Standard API Response Model
+- Custom Exceptions
+- Global Exception Handler (V1)
+- Swagger Documentation
+- Postman Testing
+
+### 🚀 Next Milestone
+
+Complete the production exception handling layer by implementing:
+
+- HTTP Exception Handler
+- Generic Exception Handler
+
+Then continue with:
+
+- OpenRouter Client
+- Embedding Service
+- Qdrant Client
+- PDF Ingestion
+- Chunking
+- Embedding Generation
+- Semantic Retrieval
+- Complete Production RAG Pipeline
 
 ---
 
@@ -203,4 +272,4 @@ GET /
 **Swarnabha Dutta**
 
 - GitHub: https://github.com/swarnabha-dutta
-- LinkedIn: https://www.linkedin.com/in/swarnabha-dutta-0ab583222/
+- LinkedIn: [https://linkedin.com/in/swarnabhadutta909/](https://www.linkedin.com/in/swarnabhadutta909/)
