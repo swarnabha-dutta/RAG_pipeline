@@ -1,14 +1,19 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.exceptions import RequestValidationError
 
 from app.config.settings import settings
-from app.core.handlers import rag_exception_handler
 from app.core.exceptions import RAGException
+from app.core.handlers import (
+    rag_exception_handler,
+    http_exception_handler,
+    validation_exception_handler,
+    generic_exception_handler,
+)
 from app.core.logger import setup_logger
+from app.models.query import QueryRequest
 from app.models.response import APIResponse
-
-
 
 logger = setup_logger()
 
@@ -32,10 +37,28 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Register Global Exception Handler
+# Register Custom Exception Handler
 app.add_exception_handler(
     RAGException,
     rag_exception_handler,
+)
+
+# Register HTTP Exception Handler
+app.add_exception_handler(
+    HTTPException,
+    http_exception_handler,
+)
+
+# Register Validation Exception Handler
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler,
+)
+
+# Register Generic Exception Handler
+app.add_exception_handler(
+    Exception,
+    generic_exception_handler,
 )
 
 
