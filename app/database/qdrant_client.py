@@ -40,6 +40,7 @@ class QdrantService:
             logger.info("Connected to Qdrant successfully.")
 
         except Exception as e:
+
             logger.exception("Failed to connect to Qdrant.")
 
             raise QdrantException(str(e))
@@ -122,18 +123,6 @@ class QdrantService:
     ):
         """
         Store vectors inside Qdrant.
-
-        Expected format:
-
-        [
-            {
-                "id": 1,
-                "embedding": [...],
-                "document": "...",
-                "page": 1,
-                "text": "..."
-            }
-        ]
         """
 
         try:
@@ -180,11 +169,13 @@ class QdrantService:
 
         try:
 
-            results = self.client.search(
+            response = self.client.query_points(
                 collection_name=self.collection,
-                query_vector=query_vector,
+                query=query_vector,
                 limit=limit,
             )
+
+            results = response.points
 
             logger.info(
                 f"Retrieved {len(results)} matching chunks."

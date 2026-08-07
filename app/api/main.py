@@ -12,8 +12,13 @@ from app.core.handlers import (
     generic_exception_handler,
 )
 from app.core.logger import setup_logger
-from app.models.query import QueryRequest
+
 from app.models.response import APIResponse
+from app.models.query import QueryRequest
+from app.models.ingestion import IngestionRequest
+
+from app.services.ingestion_service import IngestionService
+from app.services.rag_service import RAGService
 
 logger = setup_logger()
 
@@ -37,25 +42,23 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Register Custom Exception Handler
+# Register Exception Handlers
+
 app.add_exception_handler(
     RAGException,
     rag_exception_handler,
 )
 
-# Register HTTP Exception Handler
 app.add_exception_handler(
     HTTPException,
     http_exception_handler,
 )
 
-# Register Validation Exception Handler
 app.add_exception_handler(
     RequestValidationError,
     validation_exception_handler,
 )
 
-# Register Generic Exception Handler
 app.add_exception_handler(
     Exception,
     generic_exception_handler,
@@ -68,6 +71,7 @@ app.add_exception_handler(
     response_model=APIResponse,
 )
 async def home():
+
     logger.info("Home endpoint called")
 
     return APIResponse(
@@ -85,6 +89,7 @@ async def home():
     response_model=APIResponse,
 )
 async def health():
+
     logger.info("Health endpoint called")
 
     return APIResponse(
@@ -93,4 +98,62 @@ async def health():
         data={
             "status": "healthy",
         },
+    )
+
+
+@app.post(
+    "/ingest",
+    tags=["Ingestion"],
+    response_model=APIResponse,
+)
+async def ingest_document(
+    request: IngestionRequest,
+):
+    """
+    Ingest a PDF document into the vector database.
+    """
+
+    logger.info(
+        f"Received ingestion request : {request.pdf_path}"
+    )
+
+    service = IngestionService()
+
+    result = service.ingest_document(
+        request.pdf_path
+    )
+
+    return APIResponse(
+        success=True,
+        message="Document ingested successfully.",
+        data=result,
+    )
+
+
+@app.post(
+    "/query",
+    tags=["RAG"],
+    response_model=APIResponse,
+)
+async def ask_question(
+    request: QueryRequest,
+):
+    """
+    Ask a question using the RAG pipeline.
+    """
+
+    logger.info(
+        f"Received question : {request.question}"
+    )
+
+    rag_service = RAGService()
+
+    result = await rag_service.answer_question(
+        request.question
+    )
+
+    return APIResponse(
+        success=True,
+        message="Answer generated successfully.",
+        data=result,
     )
