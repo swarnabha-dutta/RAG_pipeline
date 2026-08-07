@@ -2,23 +2,61 @@
 
 A production-ready **Retrieval-Augmented Generation (RAG)** system built with **FastAPI, Qdrant, OpenRouter, Sentence Transformers, and PyMuPDF**.
 
-The project follows a scalable, production-grade architecture with clean code principles, modular design, centralized configuration, logging, exception handling, document processing, vector search, and containerized deployment.
+This project implements a complete end-to-end RAG pipeline capable of parsing PDF documents, generating embeddings, storing vectors in Qdrant, retrieving semantically relevant document chunks, and generating citation-aware answers using an OpenRouter LLM.
+
+The project follows production-grade software engineering principles including clean architecture, modular design, centralized configuration, structured logging, exception handling, scalable services, and RESTful APIs.
 
 ---
 
 # 🚀 Tech Stack
+
+### Backend
 
 - Python 3.14
 - FastAPI
 - Uvicorn
 - Pydantic v2
 - HTTPX
-- Qdrant Vector Database
+
+### AI / RAG
+
 - Sentence Transformers
+- BAAI/bge-small-en-v1.5
 - OpenRouter API
-- PyMuPDF
+- Google Gemma 3 12B (Free)
+
+### Vector Database
+
+- Qdrant
+- Cosine Similarity Search
+
+### Document Processing
+
+- PyMuPDF (fitz)
+
+### DevOps
+
 - Docker
 - Python Dotenv
+
+---
+
+# ✨ Features
+
+- ✅ Production-grade FastAPI architecture
+- ✅ PDF document ingestion
+- ✅ Automatic text cleaning
+- ✅ Intelligent text chunking
+- ✅ Embedding generation
+- ✅ Vector storage using Qdrant
+- ✅ Semantic vector search
+- ✅ Prompt engineering
+- ✅ End-to-End Retrieval-Augmented Generation (RAG)
+- ✅ Citation-aware responses
+- ✅ REST APIs
+- ✅ Swagger Documentation
+- ✅ Structured Logging
+- ✅ Production Exception Handling
 
 ---
 
@@ -28,6 +66,7 @@ The project follows a scalable, production-grade architecture with clean code pr
 RAG/
 │
 ├── app/
+│   │
 │   ├── api/
 │   │   └── main.py
 │   │
@@ -49,11 +88,17 @@ RAG/
 │   │
 │   ├── models/
 │   │   ├── query.py
-│   │   └── response.py
+│   │   ├── response.py
+│   │   ├── ingestion.py
+│   │   ├── ingestion_response.py
+│   │   └── rag_response.py
 │   │
 │   ├── services/
 │   │   ├── embedding_service.py
-│   │   └── openrouter_client.py
+│   │   ├── ingestion_service.py
+│   │   ├── openrouter_client.py
+│   │   ├── prompt_builder.py
+│   │   └── retrieval_service.py
 │   │
 │   └── utils/
 │       └── text_cleaner.py
@@ -63,8 +108,11 @@ RAG/
 │   └── processed/
 │
 ├── tests/
-│   ├── test_pdf_parser.py
+│   ├── test_ingestion.py
+│   ├── test_prompt_builder.py
 │   ├── test_qdrant.py
+│   ├── test_retrieval.py
+│   ├── test_pdf_parser.py
 │   └── test_text_chunker.py
 │
 ├── .env
@@ -78,62 +126,72 @@ RAG/
 
 # ✅ Completed
 
+## Foundation
+
 - [x] Python Environment Setup
 - [x] Virtual Environment
 - [x] FastAPI Project Initialization
-- [x] Project Folder Structure
+- [x] Production Folder Structure
 - [x] Environment Configuration
 - [x] Configuration Management
 - [x] Production Logger
-- [x] FastAPI Lifespan Events
+- [x] Lifespan Events
+
+## API Layer
+
 - [x] Root Endpoint
-- [x] Health Check Endpoint
-- [x] Standard API Response Model
+- [x] Health Endpoint
+- [x] POST /ingest
+- [x] POST /query
+- [x] Standard API Response
 - [x] Query Request Model
-- [x] Custom Exception Classes
-- [x] Custom RAG Exception Handler
-- [x] HTTP Exception Handler
-- [x] Request Validation Exception Handler
-- [x] Generic Exception Handler
+- [x] Ingestion Request Model
 - [x] Swagger Documentation
-- [x] Postman API Testing
+- [x] Postman Testing
+
+## Exception Handling
+
+- [x] Custom Exceptions
+- [x] HTTP Exception Handler
+- [x] Validation Exception Handler
+- [x] Generic Exception Handler
+
+## AI Layer
+
 - [x] OpenRouter Client
 - [x] Embedding Service
+- [x] Prompt Builder
+- [x] RAG Service
+
+## Vector Database
+
 - [x] Production Qdrant Client
-- [x] Dockerized Qdrant Setup
-- [x] Qdrant Health Check
-- [x] Collection Existence Check
+- [x] Dockerized Qdrant
+- [x] Health Check
 - [x] Collection Creation
-- [x] Production PDF Parser
-- [x] Production Text Cleaner
-- [x] Intelligent Text Chunker
+- [x] Collection Verification
 - [x] Vector Upsert
-- [x] Semantic Vector Search
+- [x] Semantic Search
 - [x] Vector Count
 - [x] Collection Delete
+
+## Document Processing
+
+- [x] Production PDF Parser
+- [x] Text Cleaner
+- [x] Intelligent Text Chunker
+- [x] Ingestion Service
+- [x] Retrieval Service
+- [x] End-to-End RAG Pipeline
 
 ---
 
 # 🚧 In Progress
 
-- Embedding Pipeline
+- Singleton Embedding Model
 - Dependency Injection
-
----
-
-# 📌 Upcoming Features
-
-- Embedding Generation Pipeline
-- Retrieval Pipeline
-- Prompt Engineering
-- Retrieval-Augmented Generation (RAG)
-- Source Citation
-- REST API
-- Streaming Responses
-- Docker Compose
-- Unit Testing
-- Integration Testing
-- CI/CD Pipeline
+- Citation Optimization
+- Duplicate Document Detection
 
 ---
 
@@ -143,6 +201,7 @@ RAG/
 
 ```bash
 git clone <repository-url>
+
 cd RAG
 ```
 
@@ -170,6 +229,25 @@ source .venv/bin/activate
 
 ```bash
 pip install -r requirements.txt
+```
+
+## Configure Environment
+
+Create a `.env` file.
+
+```env
+OPENROUTER_API_KEY=your_api_key
+
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+
+OPENROUTER_MODEL=google/gemma-3-12b-it:free
+
+QDRANT_URL=http://localhost:6333
+QDRANT_API_KEY=
+
+COLLECTION_NAME=rag_documents
+
+EMBEDDING_MODEL=BAAI/bge-small-en-v1.5
 ```
 
 ## Run Application
@@ -206,54 +284,128 @@ Swagger UI
 http://localhost:8000/docs
 ```
 
----
 
 # 📡 Available Endpoints
 
 | Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | / | Root Endpoint |
-| GET | /health | Health Check |
+| :----: | -------- | ----------- |
+| GET | `/` | Root Endpoint |
+| GET | `/health` | Application Health Check |
+| POST | `/ingest` | Ingest a PDF into the Vector Database |
+| POST | `/query` | Ask Questions using the RAG Pipeline |
+
+---
+
+# 🧪 API Examples
+
+## 1. Ingest Document
+
+**POST**
+
+```text
+POST /ingest
+```
+
+Request
+
+```json
+{
+    "pdf_path": "data/pdfs/AI Python Engineering Assignment.pdf"
+}
+```
+
+Response
+
+```json
+{
+    "success": true,
+    "message": "Document ingested successfully.",
+    "data": {
+        "document": "AI Python Engineering Assignment.pdf",
+        "pages": 5,
+        "chunks": 12,
+        "vectors": 12
+    }
+}
+```
+
+---
+
+## 2. Ask Question
+
+**POST**
+
+```text
+POST /query
+```
+
+Request
+
+```json
+{
+    "question": "What is the objective of this assignment?"
+}
+```
+
+Response
+
+```json
+{
+    "success": true,
+    "message": "Answer generated successfully.",
+    "data": {
+        "answer": "The objective of this assignment is to build a simple Retrieval-Augmented Generation (RAG) application that can answer questions from a set of PDF documents.",
+        "citations": [
+            {
+                "document": "AI Python Engineering Assignment.pdf",
+                "page": 1,
+                "text": "Build a simple Retrieval-Augmented Generation (RAG) application..."
+            }
+        ]
+    }
+}
+```
+
 ---
 
 # 📈 Development Progress
 
 | Module | Status |
-|-------------------------------|--------------|
-| Project Setup | ✅ Completed |
+| ------------------------------- | :---------: |
+| FastAPI Foundation | ✅ Completed |
 | Configuration Management | ✅ Completed |
 | Production Logger | ✅ Completed |
-| FastAPI Lifespan | ✅ Completed |
-| API Response Model | ✅ Completed |
-| Query Request Model | ✅ Completed |
-| Custom Exceptions | ✅ Completed |
-| Exception Handlers | ✅ Completed |
+| Lifespan Events | ✅ Completed |
+| API Models | ✅ Completed |
+| Exception Handling | ✅ Completed |
 | Swagger Documentation | ✅ Completed |
 | Postman Testing | ✅ Completed |
 | OpenRouter Client | ✅ Completed |
 | Embedding Service | ✅ Completed |
 | Production Qdrant Client | ✅ Completed |
 | Dockerized Qdrant | ✅ Completed |
-| Qdrant Health Check | ✅ Completed |
 | Collection Management | ✅ Completed |
 | Production PDF Parser | ✅ Completed |
 | Text Cleaner | ✅ Completed |
 | Intelligent Text Chunker | ✅ Completed |
+| Ingestion Service | ✅ Completed |
 | Vector Upsert | ✅ Completed |
-| Semantic Search | ✅ Completed |
-| Vector Count | ✅ Completed |
-| Collection Delete | ✅ Completed |
-| Embedding Pipeline | 🔄 In Progress |
+| Semantic Retrieval | ✅ Completed |
+| Retrieval Service | ✅ Completed |
+| Prompt Builder | ✅ Completed |
+| RAG Service | ✅ Completed |
+| End-to-End RAG Pipeline | ✅ Completed |
+| POST `/ingest` API | ✅ Completed |
+| POST `/query` API | ✅ Completed |
+| Singleton Embedding Model | 🔄 In Progress |
 | Dependency Injection | 🔄 In Progress |
-| Retrieval Pipeline | ⏳ Pending |
-| Prompt Engineering | ⏳ Pending |
-| Source Citation | ⏳ Pending |
-| Streaming Responses | ⏳ Pending |
-| REST API | ⏳ Pending |
-| Docker Compose | ⏳ Pending |
-| Unit Testing | ⏳ Pending |
-| Integration Testing | ⏳ Pending |
-| CI/CD Pipeline | ⏳ Pending |
+| Metadata Filtering | ⏳ Planned |
+| Hybrid Search | ⏳ Planned |
+| Streaming Responses | ⏳ Planned |
+| Docker Compose | ⏳ Planned |
+| Unit Testing | ⏳ Planned |
+| Integration Testing | ⏳ Planned |
+| GitHub Actions CI/CD | ⏳ Planned |
 
 ---
 
@@ -261,7 +413,7 @@ http://localhost:8000/docs
 
 ## Overall Progress
 
-# **78% Completed**
+# **91% Completed**
 
 ---
 
@@ -278,10 +430,12 @@ http://localhost:8000/docs
 
 ---
 
-## ✅ AI Infrastructure
+## ✅ AI Layer
 
 - OpenRouter Client
 - Embedding Service
+- Prompt Builder
+- RAG Service
 
 ---
 
@@ -289,13 +443,9 @@ http://localhost:8000/docs
 
 - Production Qdrant Client
 - Dockerized Qdrant
-- Health Check
-- Collection Creation
-- Collection Verification
+- Collection Management
 - Vector Upsert
-- Semantic Search
-- Vector Count
-- Collection Delete
+- Semantic Retrieval
 
 ---
 
@@ -304,71 +454,122 @@ http://localhost:8000/docs
 - Production PDF Parser
 - Text Cleaner
 - Intelligent Text Chunker
+- Ingestion Service
 
 ---
 
-## 🚀 Current Milestone
+## ✅ Retrieval Layer
 
-Building the Embedding & Retrieval Pipeline
-
-- Embedding Generation
-- Vector Storage
-- Semantic Retrieval
+- Query Embedding
+- Semantic Search
+- Top-K Context Retrieval
+- Citation Collection
 
 ---
 
-## 📍 Next Milestone
+## ✅ Generation Layer
 
-- Complete Embedding Pipeline
-- Retrieval Pipeline
 - Prompt Engineering
-- Source Citation
-- End-to-End RAG API
+- OpenRouter Integration
+- Answer Generation
+- Citation-Aware Responses
 
 ---
 
 # 🏗 System Architecture
 
 ```text
-                        PDF Documents
-                              │
-                              ▼
-                     Production PDF Parser
-                              │
-                              ▼
-                       Text Cleaner
-                              │
-                              ▼
-                  Intelligent Text Chunker
-                              │
-                              ▼
-                  Sentence Transformer
-                       Embeddings
-                              │
-                              ▼
-                    Qdrant Vector Database
-                              │
-                              ▼
-                    Semantic Retrieval
-                              │
-                              ▼
-                     Prompt Engineering
-                              │
-                              ▼
-                    OpenRouter LLM
-                              │
-                              ▼
-               Final Answer + Source Citation
+                    PDF Documents
+                          │
+                          ▼
+                 Production PDF Parser
+                          │
+                          ▼
+                    Text Cleaner
+                          │
+                          ▼
+               Intelligent Text Chunker
+                          │
+                          ▼
+             Sentence Transformer Embeddings
+                          │
+                          ▼
+                Qdrant Vector Database
+                          ▲
+                          │
+                   Semantic Retrieval
+                          ▲
+                          │
+                    User Question
+                          │
+                          ▼
+                  Retrieval Service
+                          │
+                          ▼
+                   Prompt Builder
+                          │
+                          ▼
+                  OpenRouter LLM
+                          │
+                          ▼
+         Answer + Document Citation + Page
 ```
 
 ---
+
+# 🔄 End-to-End Workflow
+
+```text
+PDF
+ │
+ ▼
+Parse PDF
+ │
+ ▼
+Clean Text
+ │
+ ▼
+Chunk Text
+ │
+ ▼
+Generate Embeddings
+ │
+ ▼
+Store in Qdrant
+ │
+ ▼
+──────────────────────────────────────
+User Question
+ │
+ ▼
+Generate Query Embedding
+ │
+ ▼
+Semantic Search
+ │
+ ▼
+Retrieve Top-K Chunks
+ │
+ ▼
+Build Prompt
+ │
+ ▼
+OpenRouter LLM
+ │
+ ▼
+Final Answer
+ │
+ ▼
+Answer + Citations
+```
+
 
 # 🛣 Development Roadmap
 
 ```text
 ✅ FastAPI Foundation
         │
-✅ Configuration
+✅ Configuration Management
         │
 ✅ Production Logger
         │
@@ -386,21 +587,35 @@ Building the Embedding & Retrieval Pipeline
         │
 ✅ Intelligent Text Chunker
         │
-🔄 Embedding Pipeline
+✅ Ingestion Service
         │
-⬜ Vector Storage
+✅ Vector Upsert
         │
-⬜ Semantic Retrieval
+✅ Semantic Retrieval
         │
-⬜ Prompt Engineering
+✅ Retrieval Service
         │
-⬜ RAG Pipeline
+✅ Prompt Builder
         │
-⬜ Source Citation
+✅ RAG Service
         │
-⬜ REST API
+✅ POST /ingest API
+        │
+✅ POST /query API
+        │
+🔄 Singleton Embedding Model
+        │
+🔄 Dependency Injection
+        │
+⬜ Metadata Filtering
+        │
+⬜ Hybrid Search
         │
 ⬜ Streaming Responses
+        │
+⬜ Multi-PDF Support
+        │
+⬜ Batch Document Ingestion
         │
 ⬜ Docker Compose
         │
@@ -408,34 +623,89 @@ Building the Embedding & Retrieval Pipeline
         │
 ⬜ Integration Testing
         │
-⬜ CI/CD Pipeline
+⬜ GitHub Actions CI/CD
 ```
 
 ---
 
 # 🎯 Project Goals
 
-- Build a production-ready RAG system from scratch.
-- Implement scalable document ingestion.
-- Perform semantic search using Qdrant.
-- Generate accurate answers using OpenRouter.
-- Return document-aware source citations.
+- Build a production-ready Retrieval-Augmented Generation (RAG) system.
+- Implement scalable PDF document ingestion.
+- Generate high-quality semantic embeddings.
+- Store embeddings efficiently in Qdrant.
+- Retrieve relevant context using vector similarity search.
+- Generate context-aware answers using OpenRouter.
+- Return accurate document citations with every response.
 - Follow clean architecture and production-grade engineering practices.
+- Build a modular and maintainable codebase.
+- Prepare the project for production deployment.
 
 ---
 
 # 🚀 Upcoming Features
 
-- Multi PDF Support
-- Batch Document Ingestion
+- Singleton Embedding Model
+- Dependency Injection
+- Duplicate Document Detection
 - Metadata Filtering
-- Hybrid Search
-- Streaming Responses
+- Multi-PDF Support
+- Batch Document Ingestion
+- Hybrid Search (Vector + Keyword)
 - Conversation Memory
+- Streaming Responses
+- Async Background Ingestion
 - Docker Compose
-- GitHub Actions CI/CD
 - Unit Testing
 - Integration Testing
+- GitHub Actions CI/CD
+- Production Deployment
+
+---
+
+# 📊 Current Project Status
+
+| Category | Progress |
+|----------|:--------:|
+| Backend Architecture | ✅ 100% |
+| Document Processing | ✅ 100% |
+| Vector Database | ✅ 100% |
+| Retrieval Pipeline | ✅ 100% |
+| Generation Pipeline | ✅ 100% |
+| REST APIs | ✅ 100% |
+| End-to-End RAG Workflow | ✅ 100% |
+| Production Optimizations | 🔄 In Progress |
+
+---
+
+# 🏆 Key Highlights
+
+- ✅ Production-grade FastAPI architecture
+- ✅ End-to-End Retrieval-Augmented Generation pipeline
+- ✅ Intelligent PDF document processing
+- ✅ Semantic search powered by Qdrant
+- ✅ OpenRouter LLM integration
+- ✅ Citation-aware answer generation
+- ✅ RESTful API design
+- ✅ Modular service-based architecture
+- ✅ Structured logging
+- ✅ Custom exception handling
+- ✅ Swagger API documentation
+- ✅ Dockerized vector database
+- ✅ Clean and scalable project structure
+
+---
+
+# 📌 Future Optimizations
+
+- Reduce embedding model loading time using Singleton pattern.
+- Introduce Dependency Injection across services.
+- Improve citation ranking and formatting.
+- Prevent duplicate document ingestion.
+- Support metadata-based filtering.
+- Add Hybrid Search for improved retrieval quality.
+- Increase automated test coverage.
+- Enable continuous integration and deployment.
 
 ---
 
@@ -443,5 +713,26 @@ Building the Embedding & Retrieval Pipeline
 
 **Swarnabha Dutta**
 
-- GitHub: https://github.com/swarnabha-dutta
-- LinkedIn: https://www.linkedin.com/in/swarnabhadutta909/
+**GitHub**
+
+https://github.com/swarnabha-dutta
+
+**LinkedIn**
+
+https://www.linkedin.com/in/swarnabhadutta909/
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
+
+It helps others discover the project and motivates future improvements.
+
+---
+
+# 📄 License
+
+This project is intended for educational, learning, and portfolio purposes.
+
+Feel free to fork, explore, and build upon it.
