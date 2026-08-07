@@ -10,6 +10,7 @@ A production-ready **Retrieval-Augmented Generation (RAG)** system built with **
 - FastAPI
 - Uvicorn
 - Pydantic v2
+- HTTPX
 - Qdrant Vector Database
 - Sentence Transformers
 - OpenRouter API
@@ -38,6 +39,7 @@ RAG/
 │   │   └── handlers.py
 │   │
 │   ├── database/
+│   │
 │   ├── ingestion/
 │   │
 │   ├── models/
@@ -45,6 +47,9 @@ RAG/
 │   │   └── query.py
 │   │
 │   ├── services/
+│   │   ├── embedding_service.py
+│   │   └── openrouter_client.py
+│   │
 │   └── utils/
 │
 ├── data/
@@ -83,13 +88,13 @@ RAG/
 - [x] Generic Exception Handler
 - [x] Swagger Documentation
 - [x] Postman API Testing
+- [x] OpenRouter Client
+- [x] Embedding Service
 
 ---
 
 # 🚧 In Progress
 
-- OpenRouter Client
-- Embedding Service
 - Qdrant Client
 - Dependency Injection
 
@@ -170,7 +175,7 @@ http://localhost:8000/docs
 # 📡 Available Endpoints
 
 | Method | Endpoint | Description |
-|---------|----------|-------------|
+| -------- | -------- | ----------- |
 | GET | / | Root Endpoint |
 | GET | /health | Health Check |
 
@@ -179,7 +184,7 @@ http://localhost:8000/docs
 # 📈 Development Progress
 
 | Module | Status |
-|---------|--------|
+| ---------------------------- | ---------------- |
 | Project Setup | ✅ Completed |
 | Configuration | ✅ Completed |
 | Production Logger | ✅ Completed |
@@ -190,18 +195,23 @@ http://localhost:8000/docs
 | HTTP Exception Handler | ✅ Completed |
 | Validation Exception Handler | ✅ Completed |
 | Generic Exception Handler | ✅ Completed |
-| OpenRouter Client | 🔄 In Progress |
-| Embedding Service | ⏳ Pending |
-| Qdrant Client | ⏳ Pending |
+| OpenRouter Client | ✅ Completed |
+| Embedding Service | ✅ Completed |
+| Qdrant Client | 🔄 In Progress |
+| Dependency Injection | 🔄 In Progress |
 | PDF Processing | ⏳ Pending |
-| Chunking | ⏳ Pending |
+| Intelligent Chunking | ⏳ Pending |
 | Embedding Generation | ⏳ Pending |
-| Vector Store | ⏳ Pending |
+| Vector Storage | ⏳ Pending |
 | Semantic Retrieval | ⏳ Pending |
 | RAG Pipeline | ⏳ Pending |
-| Docker | ⏳ Pending |
-| Testing | ⏳ Pending |
-| CI/CD | ⏳ Pending |
+| Prompt Engineering | ⏳ Pending |
+| Source Citation | ⏳ Pending |
+| Streaming Responses | ⏳ Pending |
+| Docker Compose | ⏳ Pending |
+| Unit Testing | ⏳ Pending |
+| Integration Testing | ⏳ Pending |
+| CI/CD Pipeline | ⏳ Pending |
 
 ---
 
@@ -209,35 +219,39 @@ http://localhost:8000/docs
 
 ## Overall Progress
 
-**50% Completed**
+**60% Completed**
 
 ### ✅ Foundation Layer
 
 - FastAPI
-- Configuration
-- Logger
-- Lifespan
+- Configuration Management
+- Production Logger
+- Lifespan Events
 - API Models
-- Exception Architecture
-- Swagger
+- Exception Handling
+- Swagger Documentation
 - Postman Testing
 
-### 🚀 Current Milestone
-
-Building the core RAG infrastructure:
+### ✅ Core Infrastructure
 
 - OpenRouter Client
 - Embedding Service
+
+### 🚀 Current Milestone
+
+Building the Retrieval Infrastructure
+
 - Qdrant Client
 - Dependency Injection
 
 ### 📍 Next Milestone
 
 - PDF Parsing
-- Intelligent Chunking
+- Intelligent Text Chunking
 - Embedding Generation
 - Vector Storage
-- Semantic Search
+- Semantic Retrieval
+- Citation Generation
 - Complete Production RAG Pipeline
 
 ---
