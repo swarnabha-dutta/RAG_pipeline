@@ -1,6 +1,6 @@
 # 📚 Production Grade RAG (Retrieval-Augmented Generation)
 
-A production-ready **Retrieval-Augmented Generation (RAG)** system built with **FastAPI, Qdrant, OpenRouter, and Sentence Transformers**. This project follows a scalable, production-grade architecture with clean code principles, modular design, logging, exception handling, and containerized deployment.
+A production-ready **Retrieval-Augmented Generation (RAG)** system built with **FastAPI, Qdrant, OpenRouter, and Sentence Transformers**. This project follows a scalable, production-grade architecture with clean code principles, modular design, centralized configuration, logging, exception handling, and containerized deployment.
 
 ---
 
@@ -9,11 +9,11 @@ A production-ready **Retrieval-Augmented Generation (RAG)** system built with **
 - Python 3.14
 - FastAPI
 - Uvicorn
-- Pydantic
+- Pydantic v2
 - Qdrant Vector Database
 - Sentence Transformers
 - OpenRouter API
-- PyMuPDF / PyPDF
+- PyMuPDF
 - Docker
 - Python Dotenv
 
@@ -39,8 +39,10 @@ RAG/
 │   │
 │   ├── database/
 │   ├── ingestion/
+│   │
 │   ├── models/
-│   │   └── response.py
+│   │   ├── response.py
+│   │   └── query.py
 │   │
 │   ├── services/
 │   └── utils/
@@ -66,24 +68,26 @@ RAG/
 - [x] Virtual Environment
 - [x] FastAPI Project Initialization
 - [x] Project Folder Structure
-- [x] Environment Configuration (.env)
+- [x] Environment Configuration
 - [x] Configuration Management
 - [x] Production Logger
 - [x] FastAPI Lifespan Events
 - [x] Root Endpoint
 - [x] Health Check Endpoint
 - [x] Standard API Response Model
+- [x] Query Request Model
 - [x] Custom Exception Classes
-- [x] Global Exception Handler (V1)
-- [x] Swagger API Documentation
+- [x] Custom RAG Exception Handler
+- [x] HTTP Exception Handler
+- [x] Request Validation Exception Handler
+- [x] Generic Exception Handler
+- [x] Swagger Documentation
 - [x] Postman API Testing
 
 ---
 
 # 🚧 In Progress
 
-- HTTP Exception Handler
-- Generic Exception Handler
 - OpenRouter Client
 - Embedding Service
 - Qdrant Client
@@ -98,11 +102,11 @@ RAG/
 - Embedding Generation
 - Vector Storage (Qdrant)
 - Semantic Retrieval
-- Retrieval-Augmented Generation (RAG) Pipeline
+- Retrieval-Augmented Generation Pipeline
 - Prompt Engineering
-- Source Citation Support
+- Source Citation
 - Streaming Responses
-- REST API Endpoints
+- REST API
 - Docker Compose
 - Unit Testing
 - Integration Testing
@@ -112,7 +116,7 @@ RAG/
 
 # 🛠 Installation
 
-## Clone the Repository
+## Clone Repository
 
 ```bash
 git clone <repository-url>
@@ -125,7 +129,7 @@ cd RAG
 python -m venv .venv
 ```
 
-## Activate Virtual Environment
+## Activate Environment
 
 ### Windows
 
@@ -145,7 +149,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run the Application
+## Run Server
 
 ```bash
 python run.py
@@ -155,49 +159,20 @@ python run.py
 
 # 📖 API Documentation
 
-## Swagger UI
+Swagger UI
 
 ```text
 http://localhost:8000/docs
 ```
 
-## Root Endpoint
-
-```http
-GET /
-```
-
-### Response
-
-```json
-{
-    "success": true,
-    "message": "Production RAG API Running 🚀",
-    "data": {
-        "version": "1.0.0"
-    }
-}
-```
-
 ---
 
-## Health Check
+# 📡 Available Endpoints
 
-```http
-GET /health
-```
-
-### Response
-
-```json
-{
-    "success": true,
-    "message": "Application Healthy",
-    "data": {
-        "status": "healthy"
-    }
-}
-```
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | / | Root Endpoint |
+| GET | /health | Health Check |
 
 ---
 
@@ -206,20 +181,21 @@ GET /health
 | Module | Status |
 |---------|--------|
 | Project Setup | ✅ Completed |
-| FastAPI | ✅ Completed |
 | Configuration | ✅ Completed |
-| Logging | ✅ Completed |
+| Production Logger | ✅ Completed |
 | Lifespan Events | ✅ Completed |
 | API Response Model | ✅ Completed |
+| Query Request Model | ✅ Completed |
 | Custom Exceptions | ✅ Completed |
-| Global Exception Handler (V1) | ✅ Completed |
-| HTTP Exception Handler | 🔄 In Progress |
-| Generic Exception Handler | ⏳ Pending |
-| OpenRouter Integration | ⏳ Pending |
+| HTTP Exception Handler | ✅ Completed |
+| Validation Exception Handler | ✅ Completed |
+| Generic Exception Handler | ✅ Completed |
+| OpenRouter Client | 🔄 In Progress |
 | Embedding Service | ⏳ Pending |
-| Qdrant Integration | ⏳ Pending |
+| Qdrant Client | ⏳ Pending |
 | PDF Processing | ⏳ Pending |
-| Chunking Strategy | ⏳ Pending |
+| Chunking | ⏳ Pending |
+| Embedding Generation | ⏳ Pending |
 | Vector Store | ⏳ Pending |
 | Semantic Retrieval | ⏳ Pending |
 | RAG Pipeline | ⏳ Pending |
@@ -233,36 +209,35 @@ GET /health
 
 ## Overall Progress
 
-**40% Completed**
+**50% Completed**
 
-### ✔️ Foundation Completed
+### ✅ Foundation Layer
 
-- FastAPI Application
-- Environment Configuration
-- Production Logger
-- Lifespan Events
-- Standard API Response Model
-- Custom Exceptions
-- Global Exception Handler (V1)
-- Swagger Documentation
+- FastAPI
+- Configuration
+- Logger
+- Lifespan
+- API Models
+- Exception Architecture
+- Swagger
 - Postman Testing
 
-### 🚀 Next Milestone
+### 🚀 Current Milestone
 
-Complete the production exception handling layer by implementing:
-
-- HTTP Exception Handler
-- Generic Exception Handler
-
-Then continue with:
+Building the core RAG infrastructure:
 
 - OpenRouter Client
 - Embedding Service
 - Qdrant Client
-- PDF Ingestion
-- Chunking
+- Dependency Injection
+
+### 📍 Next Milestone
+
+- PDF Parsing
+- Intelligent Chunking
 - Embedding Generation
-- Semantic Retrieval
+- Vector Storage
+- Semantic Search
 - Complete Production RAG Pipeline
 
 ---
@@ -272,4 +247,4 @@ Then continue with:
 **Swarnabha Dutta**
 
 - GitHub: https://github.com/swarnabha-dutta
-- LinkedIn: [https://linkedin.com/in/swarnabhadutta909/](https://www.linkedin.com/in/swarnabhadutta909/)
+- LinkedIn: https://www.linkedin.com/in/swarnabhadutta909/
