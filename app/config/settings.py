@@ -11,7 +11,8 @@ class Settings(BaseModel):
     QDRANT_API_KEY: str
     COLLECTION_NAME: str
     EMBEDDING_MODEL: str
-
+    OPENROUTER_BASE_URL: str
+    OPENROUTER_MODEL: str
 
 settings = Settings(
     OPENROUTER_API_KEY=os.getenv("OPENROUTER_API_KEY"),
@@ -19,4 +20,6 @@ settings = Settings(
     QDRANT_API_KEY=os.getenv("QDRANT_API_KEY"),
     COLLECTION_NAME=os.getenv("COLLECTION_NAME"),
     EMBEDDING_MODEL=os.getenv("EMBEDDING_MODEL"),
+    OPENROUTER_BASE_URL=os.getenv("OPENROUTER_BASE_URL"),
+    OPENROUTER_MODEL=os.getenv("OPENROUTER_MODEL"),
 )
