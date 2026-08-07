@@ -39,6 +39,7 @@ RAG/
 │   │   └── handlers.py
 │   │
 │   ├── database/
+│   │   └── qdrant_client.py
 │   │
 │   ├── ingestion/
 │   │
@@ -90,22 +91,27 @@ RAG/
 - [x] Postman API Testing
 - [x] OpenRouter Client
 - [x] Embedding Service
+- [x] Production Qdrant Client
+- [x] Dockerized Qdrant Setup
+- [x] Qdrant Health Check
+- [x] Collection Existence Check
+- [x] Collection Creation
 
 ---
 
 # 🚧 In Progress
 
-- Qdrant Client
+- PDF Parser
 - Dependency Injection
 
 ---
 
 # 📌 Upcoming Features
 
-- PDF Parsing
 - Intelligent Text Chunking
 - Embedding Generation
 - Vector Storage (Qdrant)
+- Vector Upsert
 - Semantic Retrieval
 - Retrieval-Augmented Generation Pipeline
 - Prompt Engineering
@@ -162,6 +168,20 @@ python run.py
 
 ---
 
+# 🐳 Run Qdrant (Docker)
+
+```bash
+docker run -d --name qdrant -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
+```
+
+Open Dashboard:
+
+```text
+http://localhost:6333/dashboard
+```
+
+---
+
 # 📖 API Documentation
 
 Swagger UI
@@ -175,7 +195,7 @@ http://localhost:8000/docs
 # 📡 Available Endpoints
 
 | Method | Endpoint | Description |
-| -------- | -------- | ----------- |
+| ------- | -------- | ----------- |
 | GET | / | Root Endpoint |
 | GET | /health | Health Check |
 
@@ -184,7 +204,7 @@ http://localhost:8000/docs
 # 📈 Development Progress
 
 | Module | Status |
-| ---------------------------- | ---------------- |
+| ---------------------------- | -------------- |
 | Project Setup | ✅ Completed |
 | Configuration | ✅ Completed |
 | Production Logger | ✅ Completed |
@@ -197,12 +217,14 @@ http://localhost:8000/docs
 | Generic Exception Handler | ✅ Completed |
 | OpenRouter Client | ✅ Completed |
 | Embedding Service | ✅ Completed |
-| Qdrant Client | 🔄 In Progress |
+| Production Qdrant Client | ✅ Completed |
+| Dockerized Qdrant Setup | ✅ Completed |
+| PDF Parser | 🔄 In Progress |
 | Dependency Injection | 🔄 In Progress |
-| PDF Processing | ⏳ Pending |
 | Intelligent Chunking | ⏳ Pending |
 | Embedding Generation | ⏳ Pending |
 | Vector Storage | ⏳ Pending |
+| Vector Upsert | ⏳ Pending |
 | Semantic Retrieval | ⏳ Pending |
 | RAG Pipeline | ⏳ Pending |
 | Prompt Engineering | ⏳ Pending |
@@ -219,7 +241,7 @@ http://localhost:8000/docs
 
 ## Overall Progress
 
-**60% Completed**
+**68% Completed**
 
 ### ✅ Foundation Layer
 
@@ -232,27 +254,74 @@ http://localhost:8000/docs
 - Swagger Documentation
 - Postman Testing
 
-### ✅ Core Infrastructure
+### ✅ AI Infrastructure
 
 - OpenRouter Client
 - Embedding Service
 
+### ✅ Vector Database Layer
+
+- Production Qdrant Client
+- Dockerized Qdrant
+- Health Check
+- Collection Creation
+- Collection Verification
+
 ### 🚀 Current Milestone
 
-Building the Retrieval Infrastructure
+Building the Document Processing Layer
 
-- Qdrant Client
+- PDF Parser
 - Dependency Injection
 
 ### 📍 Next Milestone
 
-- PDF Parsing
 - Intelligent Text Chunking
 - Embedding Generation
-- Vector Storage
+- Vector Upsert
 - Semantic Retrieval
-- Citation Generation
+- Source Citation
 - Complete Production RAG Pipeline
+
+---
+
+# 🛣 Roadmap
+
+```text
+✅ FastAPI Foundation
+        │
+✅ Configuration
+        │
+✅ Logger
+        │
+✅ Exception Handling
+        │
+✅ OpenRouter Client
+        │
+✅ Embedding Service
+        │
+✅ Production Qdrant Client
+        │
+🔄 PDF Parser
+        │
+⬜ Intelligent Chunking
+        │
+⬜ Embedding Generation
+        │
+⬜ Vector Upsert
+        │
+⬜ Semantic Retrieval
+        │
+⬜ RAG Pipeline
+        │
+⬜ Source Citation
+        │
+⬜ Streaming API
+        │
+⬜ Testing
+        │
+⬜ CI/CD
+```
 
 ---
 
